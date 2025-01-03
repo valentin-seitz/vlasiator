@@ -324,10 +324,10 @@ bool trans_map_1d_amr(const dccrg::Dccrg<spatial_cell::SpatialCell,dccrg::Cartes
    setupTimer.stop();
    /***********************/
 
-   int mappingTimerId = phiprof::initializeTimer("trans-amr-mapping");
-   int loadTimerId = phiprof::initializeTimer("trans-amr-load source data");
-   int memsetTimerId = phiprof::initializeTimer("trans-amr-MemSet");
-   int propagateTimerId = phiprof::initializeTimer("trans-amr-propagatePencil");
+   //int mappingTimerId = phiprof::initializeTimer("trans-amr-mapping");
+   //int loadTimerId = phiprof::initializeTimer("trans-amr-load source data");
+   //int memsetTimerId = phiprof::initializeTimer("trans-amr-MemSet");
+   //int propagateTimerId = phiprof::initializeTimer("trans-amr-propagatePencil");
 
 #pragma omp parallel
    {
@@ -342,10 +342,10 @@ bool trans_map_1d_amr(const dccrg::Dccrg<spatial_cell::SpatialCell,dccrg::Cartes
          // Get global id of the velocity block
          vmesh::GlobalID blockGID = unionOfBlocks[blocki];
 
-         phiprof::Timer mappingTimer {mappingTimerId}; // mapping (top-level)
+         //phiprof::Timer mappingTimer {mappingTimerId}; // mapping (top-level)
 
          // Load data for pencils.
-         phiprof::Timer loadTimer {loadTimerId};
+         //phiprof::Timer loadTimer {loadTimerId};
          for (uint pencili = 0; pencili < DimensionPencils[dimension].N; ++pencili){
             int nonEmptyBlocks = 0;
             int L = DimensionPencils[dimension].lengthOfPencils[pencili];
@@ -374,9 +374,9 @@ bool trans_map_1d_amr(const dccrg::Dccrg<spatial_cell::SpatialCell,dccrg::Cartes
             copy_trans_block_data_amr(pencilBlockData, L, blockDataSource,
                                       cellid_transpose, popID);
          }
-         loadTimer.stop();
+         //loadTimer.stop();
 
-         phiprof::Timer memsetTimer {memsetTimerId};
+         //phiprof::Timer memsetTimer {memsetTimerId};
          // reset blocks in all non-sysboundary neighbor spatial cells for this block id
          for (CellID target_cell_id: DimensionTargetCells[dimension]) {
             SpatialCell* target_cell = mpiGrid[target_cell_id];
@@ -391,9 +391,9 @@ bool trans_map_1d_amr(const dccrg::Dccrg<spatial_cell::SpatialCell,dccrg::Cartes
                }
             }
          }
-         memsetTimer.stop();
+         //memsetTimer.stop();
 
-         phiprof::Timer propagateTimer {propagateTimerId};
+         //phiprof::Timer propagateTimer {propagateTimerId};
          for(uint pencili = 0; pencili < DimensionPencils[dimension].N; ++pencili){
             // Skip pencils without blocks
             if (pencilBlocksCount.at(pencili) == 0) {
@@ -423,9 +423,9 @@ bool trans_map_1d_amr(const dccrg::Dccrg<spatial_cell::SpatialCell,dccrg::Cartes
                             cellid_transpose
                );
          }
-         propagateTimer.stop();
+         //propagateTimer.stop();
 
-         mappingTimer.stop(); // mapping (top-level)
+         //mappingTimer.stop(); // mapping (top-level)
       } // Closes loop over blocks
    } // closes pragma omp parallel
 

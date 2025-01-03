@@ -43,10 +43,10 @@ void calculateVolumeAveragedFields(
    const size_t N_cells = gridDims[0]*gridDims[1]*gridDims[2];
 
    phiprof::Timer timer {"Calculate volume averaged fields"};
-   int parallelTimerId {phiprof::initializeTimer("volume averaged fields compute cells")};
+   //int parallelTimerId {phiprof::initializeTimer("volume averaged fields compute cells")};
    #pragma omp parallel
    {
-      phiprof::Timer parallelTimer {parallelTimerId};
+      //phiprof::Timer parallelTimer {parallelTimerId};
       #pragma omp for collapse(2)
       for (FsGridTools::FsIndex_t k=0; k<gridDims[2]; k++) {
          for (FsGridTools::FsIndex_t j=0; j<gridDims[1]; j++) {

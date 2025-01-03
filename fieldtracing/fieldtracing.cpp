@@ -959,7 +959,7 @@ namespace FieldTracing {
       std::vector<signed char> smallReducedCellFWConnection, smallReducedCellBWConnection;
 
 
-      int mpi_timer {phiprof::initializeTimer("MPI-loop")};
+      //int mpi_timer {phiprof::initializeTimer("MPI-loop")};
       phiprof::Timer loopTimer {"loop"};
       #pragma omp parallel shared(cellsToDoFullBox,cellsToDoFluxRopes)
       {
@@ -1008,7 +1008,7 @@ namespace FieldTracing {
             } // for
             
             // Globally reduce whether any node still needs to be picked up and traced onwards
-            phiprof::Timer timer {mpi_timer};
+            //phiprof::Timer timer {mpi_timer};
             #pragma omp master
             {
                indicesToReduceFW.clear();
@@ -1082,7 +1082,7 @@ namespace FieldTracing {
                cellBWConnection[indicesToReduceBW[n]] = smallReducedCellBWConnection[n];
                cellBWTracingCoordinates[indicesToReduceBW[n]] = smallSumCellBWTracingCoordinates[n];
             }
-            timer.stop();
+            //timer.stop();
             #pragma omp single
             {
                cellsToDoFullBox = 0;

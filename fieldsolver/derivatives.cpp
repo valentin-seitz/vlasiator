@@ -345,7 +345,7 @@ void calculateDerivativesSimple(
    const FsGridTools::FsIndex_t* gridDims = &technicalGrid.getLocalSize()[0];
    const size_t N_cells = gridDims[0]*gridDims[1]*gridDims[2];
    phiprof::Timer derivativesTimer {"Calculate face derivatives"};
-   int computeTimerId {phiprof::initializeTimer("FS derivatives compute cells")};
+   //int computeTimerId {phiprof::initializeTimer("FS derivatives compute cells")};
 
    phiprof::Timer mpiTimer {"FS derivatives ghost updates MPI", {"MPI"}};
    switch (RKCase) {
@@ -386,7 +386,7 @@ void calculateDerivativesSimple(
    // Calculate derivatives
    #pragma omp parallel
    {
-      phiprof::Timer computeTimer {computeTimerId};
+      //phiprof::Timer computeTimer {computeTimerId};
       #pragma omp for collapse(2)
       for (FsGridTools::FsIndex_t k=0; k<gridDims[2]; k++) {
          for (FsGridTools::FsIndex_t j=0; j<gridDims[1]; j++) {
@@ -521,7 +521,7 @@ void calculateBVOLDerivativesSimple(
    const FsGridTools::FsIndex_t* gridDims = &technicalGrid.getLocalSize()[0];
    const size_t N_cells = gridDims[0]*gridDims[1]*gridDims[2];
    phiprof::Timer derivsTimer {"Calculate volume derivatives"};
-   int computeTimerId {phiprof::initializeTimer("FS derivatives BVOL compute cells")};
+   //int computeTimerId {phiprof::initializeTimer("FS derivatives BVOL compute cells")};
 
    phiprof::Timer commTimer {"BVOL derivatives ghost updates MPI", {"MPI"}};
    volGrid.updateGhostCells();
@@ -530,7 +530,7 @@ void calculateBVOLDerivativesSimple(
    // Calculate derivatives
    #pragma omp parallel
    {
-      phiprof::Timer computeTimer {computeTimerId};
+      //phiprof::Timer computeTimer {computeTimerId};
       #pragma omp for collapse(2)
       for (FsGridTools::FsIndex_t k=0; k<gridDims[2]; k++) {
          for (FsGridTools::FsIndex_t j=0; j<gridDims[1]; j++) {
@@ -539,7 +539,7 @@ void calculateBVOLDerivativesSimple(
             }
          }
       }
-      computeTimer.stop(N_cells,"Spatial Cells");
+      //computeTimer.stop(N_cells,"Spatial Cells");
    }
 
    derivsTimer.stop(N_cells,"Spatial Cells");
@@ -665,7 +665,7 @@ void calculateCurvatureSimple(
    const FsGridTools::FsIndex_t* gridDims = &technicalGrid.getLocalSize()[0];
    const size_t N_cells = gridDims[0]*gridDims[1]*gridDims[2];
    phiprof::Timer curvatureTimer {"Calculate curvature"};
-   int computeTimerId {phiprof::initializeTimer("Calculate curvature compute cells")};
+   //int computeTimerId {phiprof::initializeTimer("Calculate curvature compute cells")};
 
    phiprof::Timer commTimer {"Calculate curvature ghost updates MPI", {"MPI"}};
    volGrid.updateGhostCells();
@@ -673,7 +673,7 @@ void calculateCurvatureSimple(
 
    #pragma omp parallel
    {
-      phiprof::Timer computeTimer {computeTimerId};
+      //phiprof::Timer computeTimer {computeTimerId};
       #pragma omp for collapse(2)
       for (FsGridTools::FsIndex_t k=0; k<gridDims[2]; k++) {
          for (FsGridTools::FsIndex_t j=0; j<gridDims[1]; j++) {
@@ -686,7 +686,7 @@ void calculateCurvatureSimple(
             }
          }
       }
-      computeTimer.stop(N_cells, "Spatial Cells");
+      //computeTimer.stop(N_cells, "Spatial Cells");
    }
 
    curvatureTimer.stop(N_cells, "Spatial Cells");
@@ -882,7 +882,7 @@ void calculateScaledDeltasSimple(dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geome
    const vector<CellID>& cells = getLocalCells();
    int N_cells = cells.size();
    phiprof::Timer gradientsTimer {"Calculate volume gradients"};
-   int computeTimerId {phiprof::initializeTimer("Calculate volume gradients compute cells")};
+   //int computeTimerId {phiprof::initializeTimer("Calculate volume gradients compute cells")};
 
    phiprof::Timer commTimer {"Calculate volume gradients ghost updates MPI", {"MPI"}};
    // We only need nearest neighbourhood and spatial data here
@@ -893,7 +893,7 @@ void calculateScaledDeltasSimple(dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geome
    // Calculate derivatives
    #pragma omp parallel
    {
-      phiprof::Timer computeTimer {computeTimerId};
+      //phiprof::Timer computeTimer {computeTimerId};
       #pragma omp for
       for (uint i = 0; i < cells.size(); ++i) {
          CellID id = cells[i];
@@ -904,7 +904,7 @@ void calculateScaledDeltasSimple(dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geome
          }
          calculateScaledDeltas(cell, neighbors);
       }
-      computeTimer.stop(N_cells,"Spatial Cells");
+      //computeTimer.stop(N_cells,"Spatial Cells");
    }
 
    

@@ -815,7 +815,7 @@ void calculateHallTermSimple(
 
    phiprof::Timer hallTimer {"Calculate Hall term"};
    phiprof::Timer mpiTimer {"EHall ghost updates MPI", {"MPI"}};
-   int computeTimerId {phiprof::initializeTimer("EHall compute cells")};
+   //int computeTimerId {phiprof::initializeTimer("EHall compute cells")};
    dPerBGrid.updateGhostCells();
    if(P::ohmGradPeTerm == 0 && communicateMomentsDerivatives) {
       if (RKCase == RK_ORDER1 || RKCase == RK_ORDER2_STEP2) {
@@ -828,7 +828,7 @@ void calculateHallTermSimple(
 
    #pragma omp parallel
    {
-      phiprof::Timer computeTimer {computeTimerId};
+      //phiprof::Timer computeTimer {computeTimerId};
       #pragma omp for collapse(2)
       for (FsGridTools::FsIndex_t k=0; k<gridDims[2]; k++) {
          for (FsGridTools::FsIndex_t j=0; j<gridDims[1]; j++) {
@@ -841,7 +841,7 @@ void calculateHallTermSimple(
             }
          }
       }
-      computeTimer.stop(N_cells,"Spatial Cells");
+      //computeTimer.stop(N_cells,"Spatial Cells");
    }
 
    hallTimer.stop(N_cells, "Spatial Cells");
