@@ -437,7 +437,7 @@ bool trans_map_1d(const dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geometry>& mpi
 
       
       
-#pragma omp for schedule(guided)
+#pragma omp for taskloop
       for(uint blocki = 0; blocki < unionOfBlocks.size(); blocki++){
          vmesh::GlobalID blockGID = unionOfBlocks[blocki];
          //phiprof::Timer mappingTimer {mapping_id};
