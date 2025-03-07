@@ -330,6 +330,7 @@ bool trans_map_1d_amr(const dccrg::Dccrg<spatial_cell::SpatialCell,dccrg::Cartes
    //int propagateTimerId = phiprof::initializeTimer("trans-amr-propagatePencil");
 
 #pragma omp parallel
+#pragma omp single
    {
       // Vector of pointers to cell block data, used for both reading and writing
       std::vector<Vec> blockDataBuffer(DimensionPencils[dimension].sumOfLengths*WID3/VECL);
@@ -337,7 +338,7 @@ bool trans_map_1d_amr(const dccrg::Dccrg<spatial_cell::SpatialCell,dccrg::Cartes
       std::vector<uint> pencilBlocksCount(DimensionPencils[dimension].N);
 
       // Loop over velocity space blocks (threaded).
-#pragma omp for schedule(dynamic,1)
+#pragma omp taskloop
       for(uint blocki = 0; blocki < unionOfBlocks.size(); blocki++) {
          // Get global id of the velocity block
          vmesh::GlobalID blockGID = unionOfBlocks[blocki];
