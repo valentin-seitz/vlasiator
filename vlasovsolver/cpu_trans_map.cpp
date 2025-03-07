@@ -430,6 +430,7 @@ bool trans_map_1d(const dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geometry>& mpi
    //int store_id {phiprof::initializeTimer("store")};
    
 #pragma omp parallel 
+#pragma omp single
    {
       std::vector<Realf> targetBlockData(3 * localPropagatedCells.size() * WID3);
       std::vector<bool> targetsValid(localPropagatedCells.size());
@@ -437,7 +438,7 @@ bool trans_map_1d(const dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geometry>& mpi
 
       
       
-#pragma omp for taskloop
+#pragma omp taskloop
       for(uint blocki = 0; blocki < unionOfBlocks.size(); blocki++){
          vmesh::GlobalID blockGID = unionOfBlocks[blocki];
          //phiprof::Timer mappingTimer {mapping_id};
