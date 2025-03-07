@@ -1,5 +1,5 @@
 #set default architecture, can be overridden from the compile line
-ARCH = ${VLASIATOR_ARCH}
+ARCH = MN5_gpp
 
 # NB updating git submodules require e.g. using the --recurse-submodules flag, e.g.:
 # submodules currently include the header library fsgrid
@@ -91,7 +91,7 @@ COMPFLAGS += -DACC_SEMILAG_PQM -DTRANS_SEMILAG_PPM
 COMPFLAGS += ${INC_PROFILE}
 
 #use jemalloc
-COMPFLAGS += ${INC_JEMALLOC}
+#COMPFLAGS += ${INC_JEMALLOC}
 
 #define precision
 COMPFLAGS += -D${FP_PRECISION}
