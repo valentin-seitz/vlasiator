@@ -1,11 +1,11 @@
 # -*- mode: makefile -*-
 # GCC
-CMP = mpicxx
-LNK = mpicxx
+#CMP = mpicxx
+#LNK = mpicxx
 
 # Intel
-#CMP = mpiicpx
-#LNK = mpiicpx
+CMP = mpic++
+LNK = mpic++
 
 # Starting Makefile for the general partition of the MareNostrum5 supercomputer located at the BSC.
 
@@ -26,8 +26,8 @@ else
 endif
 
 # GNU flags:
-CXXFLAGS += -O3 -fopenmp -funroll-loops -std=c++17 -W -Wall -Wno-unused -mavx2
-testpackage: CXXFLAGS = -O2 -fopenmp -funroll-loops -std=c++17 -fabi-version=0  -mavx
+CXXFLAGS += -O3 -fopenmp -funroll-loops -std=c++17 -W -Wall -Wno-unused -mavx2 -march=sapphirerapids
+testpackage: CXXFLAGS = -O2 -fopenmp -funroll-loops -std=c++17 -fabi-version=0 -mavx2 -march=sapphirerapids
 
 MATHFLAGS = -ffast-math -fno-finite-math-only
 testpackage: MATHFLAGS = -fno-unsafe-math-optimizations
@@ -37,7 +37,7 @@ LDFLAGS = -fopenmp -Wl,--as-needed
 LIB_MPI = -lgomp
 
 # Intel
-#LDFLAGS = -qopenmp -liomp -Wl,--as-needed
+#LDFLAGS = -qopenmp -Wl,--as-needed
 
 #======== Allocator =========
 # Use jemalloc instead of system malloc to reduce memory fragmentation? https://github.com/jemalloc/jemalloc
@@ -66,23 +66,23 @@ testpackage: CXXFLAGS += -DMPICH_IGNORE_CXX_SEEK
 #======== Libraries ===========
 
 # Adjust to where your own libraries/dependencies have been built.
-LIBRARY_PREFIX = /gpfs/projects/bsc33/bsc033626/LIBS
+LIBRARY_PREFIX = /gpfs/scratch/bsc33/bsc033790/vlasiator/inst/gcc-ompi4/deps
 
 # Compiled libraries
-INC_BOOST = -I/apps/GPP/BSCTOOLS/deps/boost/1.84.0/include
-LIB_BOOST = -L/apps/GPP/BSCTOOLS/deps/boost/1.84.0/lib -lboost_program_options
+INC_BOOST = 
+LIB_BOOST = -lboost_program_options
 
-INC_ZOLTAN = -I$(LIBRARY_PREFIX)/zoltan/VLASIATOR.GCC.DEV/include
-LIB_ZOLTAN = -L$(LIBRARY_PREFIX)/zoltan/VLASIATOR.GCC.DEV/lib -lzoltan
+INC_ZOLTAN = -I$(LIBRARY_PREFIX)/include
+LIB_ZOLTAN = -L$(LIBRARY_PREFIX)/lib -lzoltan
 
-INC_JEMALLOC = -I$(LIBRARY_PREFIX)/jemalloc/VLASIATOR.GCC.DEV-5.3.0/include
-LIB_JEMALLOC = -L$(LIBRARY_PREFIX)/jemalloc/VLASIATOR.GCC.DEV-5.3.0/lib -ljemalloc
+INC_JEMALLOC = -I$(LIBRARY_PREFIX)/include 
+LIB_JEMALLOC = -L$(LIBRARY_PREFIX)/lib -ljemalloc
 
-INC_VLSV = -I$(LIBRARY_PREFIX)/vlsv/VLASIATOR.GCC.DEV/include
-LIB_VLSV = -L$(LIBRARY_PREFIX)/vlsv/VLASIATOR.GCC.DEV/lib -lvlsv
+INC_VLSV = -I$(LIBRARY_PREFIX)/sources/vlsv/
+LIB_VLSV = -L$(LIBRARY_PREFIX)/sources/vlsv/ -lvlsv
 
-INC_PROFILE = -I$(LIBRARY_PREFIX)/phiprof/VLASIATOR.GCC.DEV/include
-LIB_PROFILE = -L$(LIBRARY_PREFIX)/phiprof/VLASIATOR.GCC.DEV/lib -lphiprof
+INC_PROFILE = -I$(LIBRARY_PREFIX)/sources/phiprof/include
+LIB_PROFILE = -L$(LIBRARY_PREFIX)/sources/phiprof/lib -lphiprof
 
 # Header libraries
 
