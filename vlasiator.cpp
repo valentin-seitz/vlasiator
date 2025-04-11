@@ -853,6 +853,12 @@ int main(int argn,char* args[]) {
 
    int doNow[3] = {0}; // 0: writeRestartNow, 1: balanceLoadNow, 2: refineNow ; declared outside main loop
    int writeRestartNow; // declared outside main loop
+   bool reallyWriteRestart = false;
+   const char* reallyWriteRestartEnv = std::getenv("VLASIATOR_WRITE_RESTART");
+   if(reallyWriteRestartEnv != nullptr) {
+      reallyWriteRestart = true;
+   }
+
    bool overrideRebalanceNow = false; // declared outside main loop
    bool refineNow = false; // declared outside main loop
    
@@ -1020,38 +1026,41 @@ int main(int argn,char* args[]) {
          doNow[2] = false;
       }
       restartCheckTimer.stop();
-
+      
       if (writeRestartNow >= 1){
          phiprof::Timer timer {"write-restart"};
          if (writeRestartNow == 1) {
             wallTimeRestartCounter++;
          }
-
-         // Refinement params for restart refinement
-         calculateScaledDeltasSimple(mpiGrid);
-         
-         if (myRank == MASTER_RANK)
-            logFile << "(IO): Writing restart data to disk, tstep = " << P::tstep << " t = " << P::t << endl << writeVerbose;
-         //Write the restart:
-         if( writeRestart(mpiGrid,
-                  perBGrid, // TODO: Merge all the fsgrids passed here into one meta-object
-                  EGrid,
-                  EHallGrid,
-                  EGradPeGrid,
-                  momentsGrid,
-                  dPerBGrid,
-                  dMomentsGrid,
-                  BgBGrid,
-                  volGrid,
-                  technicalGrid,
-                  version,
-                  config,
-                  outputReducer,"restart",(uint)P::t,P::restartStripeFactor) == false ) {
-            logFile << "(IO): ERROR Failed to write restart!" << endl << writeVerbose;
-            cerr << "FAILED TO WRITE RESTART" << endl;
-         }
-         if (myRank == MASTER_RANK) {
-            logFile << "(IO): .... done!"<< endl << writeVerbose;
+         if(reallyWriteRestart){
+            // Refinement params for restart refinement
+            calculateScaledDeltasSimple(mpiGrid);
+            
+            if (myRank == MASTER_RANK)
+               logFile << "(IO): Writing restart data to disk, tstep = " << P::tstep << " t = " << P::t << endl << writeVerbose;
+            //Write the restart:
+            if( writeRestart(mpiGrid,
+                     perBGrid, // TODO: Merge all the fsgrids passed here into one meta-object
+                     EGrid,
+                     EHallGrid,
+                     EGradPeGrid,
+                     momentsGrid,
+                     dPerBGrid,
+                     dMomentsGrid,
+                     BgBGrid,
+                     volGrid,
+                     technicalGrid,
+                     version,
+                     config,
+                     outputReducer,"restart",(uint)P::t,P::restartStripeFactor) == false ) {
+               logFile << "(IO): ERROR Failed to write restart!" << endl << writeVerbose;
+               cerr << "FAILED TO WRITE RESTART" << endl;
+            }
+            if (myRank == MASTER_RANK) {
+               logFile << "(IO): .... done!"<< endl << writeVerbose;
+            }
+         }else{
+            logFile << "(IO): Saving GPFS from some work, due to missing VLASIATOR_WRITE_RESTART enviroment variable. NOT writing anything"<< endl << writeVerbose;
          }
          timer.stop();
       }
