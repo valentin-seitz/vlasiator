@@ -385,7 +385,13 @@ int simulate(int argn,char* args[]) {
    #endif
    logFile << " OpenMP threads per process on " << nNodes << " nodes" << endl << writeVerbose;      
    openLoggerTimer.stop();
-   
+   bool reallyWriteRestart = false;
+   const char* reallyWriteRestartEnv = std::getenv("VLASIATOR_WRITE_RESTART");
+   if(reallyWriteRestartEnv != nullptr) {
+      reallyWriteRestart = true;
+   }
+
+   if(myRank==MASTER_RANK){logFile << "(IO): Saving GPFS from some work later due to VLASIATOR_WRITE_RESTART enviroment variable: No writing of restarts"<< endl << writeVerbose;}
    // Init project
    phiprof::Timer initProjectimer {"Init project"};
    if (project->initialize() == false) {
@@ -996,7 +1002,7 @@ int simulate(int argn,char* args[]) {
          if (doNow[donow::SAVE] == 1) { // write restart
             wallTimeRestartCounter++;
          }
-
+	 if(reallyWriteRestart){
          // Refinement params for restart refinement
          calculateScaledDeltasSimple(mpiGrid);
          
@@ -1027,6 +1033,11 @@ int simulate(int argn,char* args[]) {
          if (myRank == MASTER_RANK) {
             logFile << "(IO): .... done!"<< endl << writeVerbose;
          }
+	 }
+	 else{
+		if(myRank==MASTER_RANK){logFile << "(IO): Saving GPFS from some work, due to missing VLASIATOR_WRITE_RESTART enviroment variable. NOT writing anything"<< endl << writeVerbose;}
+	 }
+
          timer.stop();
       }
       
