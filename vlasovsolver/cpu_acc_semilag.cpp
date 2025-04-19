@@ -47,8 +47,8 @@ void cpu_accelerate_cells(dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geometry>& m
                           const uint popID,
                           const uint map_order
    ) {
-   int timerId {phiprof::initializeTimer("cell-semilag-acc")};
-   int intersections_id {phiprof::initializeTimer("cell-compute-intersections")};
+   //int timerId {phiprof::initializeTimer("cell-semilag-acc")};
+   int intersections_id;
 
    #pragma omp parallel // Launch workshare region
    {
@@ -68,9 +68,9 @@ void cpu_accelerate_cells(dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geometry>& m
          const CellID cellID = acceleratedCells[c];
          SpatialCell* SC = mpiGrid[cellID];
 
-         phiprof::Timer semilagAccTimer {timerId};
+         //phiprof::Timer semilagAccTimer {timerId};
          cpu_accelerate_cell(SC,popID,map_order);
-         semilagAccTimer.stop();
+         //semilagAccTimer.stop();
       }
    }
 }

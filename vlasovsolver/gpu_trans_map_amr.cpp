@@ -426,7 +426,7 @@ bool trans_map_1d_amr(const dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geometry>&
    // Find maximum mesh size.
    phiprof::Timer maxMeshSizeTimer {"trans-amr-find-maxmesh"};
    uint largestFoundMeshSize = 0;
-   int checkMeshId {phiprof::initializeTimer("trans-amr-checkMesh")};
+   //int checkMeshId {phiprof::initializeTimer("trans-amr-checkMesh")};
    #pragma omp parallel
    {
       uint thread_largestFoundMeshSize = 0;
@@ -436,7 +436,7 @@ bool trans_map_1d_amr(const dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geometry>&
          const uint thisMeshSize = mpiGrid[allCells[celli]]->get_velocity_mesh(popID)->size(); // get cached size from CPU side
          thread_largestFoundMeshSize = thisMeshSize > thread_largestFoundMeshSize ? thisMeshSize : thread_largestFoundMeshSize;
          #ifdef DEBUG_VLASIATOR
-         phiprof::Timer checkMeshTimer {checkMeshId};
+         //phiprof::Timer checkMeshTimer {checkMeshId};
          if (!mpiGrid[allCells[celli]]->checkMesh(popID)) {
             printf("GPU TRANS MAP AMR check of mesh for popID %d cell %lu failed!\n",popID,allCells[celli]);
          }

@@ -211,7 +211,7 @@ void calculateGradPeTermSimple(
    const FsGridTools::FsIndex_t* gridDims = &technicalGrid.getLocalSize()[0];
    const size_t N_cells = gridDims[0]*gridDims[1]*gridDims[2];
    phiprof::Timer gradPeTimer {"Calculate GradPe term"};
-   int computeTimerId {phiprof::initializeTimer("EgradPe compute cells")};
+   //int computeTimerId {phiprof::initializeTimer("EgradPe compute cells")};
 
    phiprof::Timer mpiTimer {"EgradPe field update ghosts MPI", {"MPI"}};
    if (RKCase == RK_ORDER1 || RKCase == RK_ORDER2_STEP2) {
@@ -224,7 +224,7 @@ void calculateGradPeTermSimple(
    // Calculate GradPe term
    #pragma omp parallel
    {
-      phiprof::Timer computeTimer {computeTimerId};
+      //phiprof::Timer computeTimer {computeTimerId};
       #pragma omp for collapse(2)
       for (FsGridTools::FsIndex_t k=0; k<gridDims[2]; k++) {
          for (FsGridTools::FsIndex_t j=0; j<gridDims[1]; j++) {
@@ -237,7 +237,7 @@ void calculateGradPeTermSimple(
             }
          }
       }
-      computeTimer.stop(N_cells,"Spatial Cells");
+      //computeTimer.stop(N_cells,"Spatial Cells");
    }
 
    gradPeTimer.stop(N_cells,"Spatial Cells");

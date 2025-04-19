@@ -588,7 +588,7 @@ void balanceLoad(dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geometry>& mpiGrid, S
          SpatialCell::set_mpi_transfer_type(Transfer::VEL_BLOCK_LIST_STAGE2);
          mpiGrid.continue_balance_load();
 
-         int prepareReceives {phiprof::initializeTimer("Preparing receives")};
+         //int prepareReceives {phiprof::initializeTimer("Preparing receives")};
          int receives = 0;
          #pragma omp parallel for schedule(guided)
          for (unsigned int i=0; i<incoming_cells_list.size(); i++) {
@@ -597,16 +597,16 @@ void balanceLoad(dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geometry>& mpiGrid, S
             if (cell_id % num_part_transfers == transfer_part) {
                receives++;
                // reserve space for velocity block data in arriving remote cells
-               phiprof::Timer timer {prepareReceives};
+               //phiprof::Timer timer {prepareReceives};
                cell->prepare_to_receive_blocks(popID);
-               timer.stop(1, "Spatial cells");
+               //timer.stop(1, "Spatial cells");
             }
          }
          if(receives == 0) {
             //empty phiprof timer, to avoid unneccessary divergence in unique
             //profiles (keep order same)
-            phiprof::Timer timer {prepareReceives};
-            timer.stop(0, "Spatial cells");
+            //phiprof::Timer timer {prepareReceives};
+            //timer.stop(0, "Spatial cells");
          }
 
          //do the actual transfer of data for the set of cells to be transferred
@@ -1339,19 +1339,19 @@ bool adaptRefinement(dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geometry>& mpiGri
       SpatialCell::set_mpi_transfer_type(Transfer::VEL_BLOCK_LIST_STAGE2);
       mpiGrid.continue_refining();
 
-      int prepareReceives {phiprof::initializeTimer("Preparing receives")};
+      //int prepareReceives {phiprof::initializeTimer("Preparing receives")};
       for (CellID id : receives) {
          // reserve space for velocity block data in arriving remote cells
-         phiprof::Timer timer {prepareReceives};
+         //phiprof::Timer timer {prepareReceives};
          mpiGrid[id]->prepare_to_receive_blocks(popID);
-         timer.stop(1, "Spatial cells");
+         //timer.stop(1, "Spatial cells");
       }
 
       if(receives.empty()) {
          //empty phiprof timer, to avoid unneccessary divergence in unique
          //profiles (keep order same)
-         phiprof::Timer timer {prepareReceives};
-         timer.stop(0, "Spatial cells");
+         //phiprof::Timer timer {prepareReceives};
+         //timer.stop(0, "Spatial cells");
       }
 
       //do the actual transfer of data for the set of cells to be transferred

@@ -185,10 +185,10 @@ void adjust_velocity_blocks_in_cells(
    bool includeNeighbors
    ) {
 
-   int adjustPreId {phiprof::initializeTimer("Adjusting blocks Pre")};
-   int adjustId {phiprof::initializeTimer("Adjusting blocks")};
-   int cleanupId {phiprof::initializeTimer("Hashmap cleanup")};
-   int adjustPostId {phiprof::initializeTimer("Adjusting blocks Post")};
+   //int adjustPreId {phiprof::initializeTimer("Adjusting blocks Pre")};
+   //int adjustId {phiprof::initializeTimer("Adjusting blocks")};
+   //int cleanupId {phiprof::initializeTimer("Hashmap cleanup")};
+   //int adjustPostId {phiprof::initializeTimer("Adjusting blocks Post")};
    const gpuStream_t baseStream = gpu_getStream();
    const gpuStream_t priorityStream = gpu_getPriorityStream();
    const uint nCells = cellsToAdjust.size();
@@ -257,7 +257,7 @@ void adjust_velocity_blocks_in_cells(
    size_t largestVelMesh = 0;
 #pragma omp parallel
    {
-      phiprof::Timer timer {adjustPreId};
+      //phiprof::Timer timer {adjustPreId};
       size_t threadLargestVelMesh = 0;
 #pragma omp for schedule(dynamic,1)
       for (size_t i=0; i<nCells; ++i) {
@@ -321,7 +321,7 @@ void adjust_velocity_blocks_in_cells(
          host_lists_to_replace[i] = SC->dev_list_to_replace;
          host_lists_with_replace_old[i] = SC->dev_list_with_replace_old;
       }
-      timer.stop();
+      //timer.stop();
 #pragma omp critical
       {
          largestVelMesh = std::max(threadLargestVelMesh, largestVelMesh);
@@ -706,12 +706,12 @@ void adjust_velocity_blocks_in_cells(
          SC->increment_mass_loss(popID, host_massLoss[i]);
 
          // Perform hashmap cleanup here (instead of at acceleration mid-steps)
-         phiprof::Timer cleanupTimer {cleanupId};
+         //phiprof::Timer cleanupTimer {cleanupId};
          //SC->get_velocity_mesh(popID)->gpu_cleanHashMap(gpu_getStream());
          //SC->dev_upload_population(popID);
-         cleanupTimer.stop();
+         //cleanupTimer.stop();
 
-         phiprof::Timer postTimer {adjustPostId};
+         //phiprof::Timer postTimer {adjustPostId};
          #ifdef DEBUG_SPATIAL_CELL
          // Not re-doing old debug here, this should be enough
          SC->checkSizes(popID);
@@ -735,7 +735,7 @@ void adjust_velocity_blocks_in_cells(
                host_massLoss[i] = 0;
             }
          } // end if conserve mass
-         postTimer.stop();
+         //postTimer.stop();
       } // end cell loop
    } // end parallel region
 

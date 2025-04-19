@@ -55,7 +55,7 @@ void compute_cell_intersections(
    Transform<Real,3,Affine> fwd_transform= compute_acceleration_transformation(spatial_cell,popID,dt);
    Transform<Real,3,Affine> bwd_transform= fwd_transform.inverse();
 
-   phiprof::Timer intersectionsTimer {intersections_id};
+   //phiprof::Timer intersectionsTimer {intersections_id};
    switch(map_order){
       case 0: {
          //Map order XYZ
@@ -97,7 +97,7 @@ void compute_cell_intersections(
          break;
       }
    }
-   intersectionsTimer.stop();
+   //intersectionsTimer.stop();
 }
 
 /**

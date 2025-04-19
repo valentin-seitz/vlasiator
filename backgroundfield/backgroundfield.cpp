@@ -60,16 +60,16 @@ void setBackgroundField(
 
       auto localSize = BgBGrid.getLocalSize();
 
-      int loopTopId {phiprof::initializeTimer("loop-top")};
-      int loopFaceId {phiprof::initializeTimer("loop-face-averages")};
-      int loopVolumeId {phiprof::initializeTimer("loop-volume-averages")};
+      //int loopTopId {phiprof::initializeTimer("loop-top")};
+      //int loopFaceId {phiprof::initializeTimer("loop-face-averages")};
+      //int loopVolumeId {phiprof::initializeTimer("loop-volume-averages")};
 
       // These are threaded now that the dipole field is threadsafe
       #pragma omp parallel for collapse(2)
       for (FsGridTools::FsIndex_t z = 0; z < localSize[2]; ++z) {
          for (FsGridTools::FsIndex_t y = 0; y < localSize[1]; ++y) {
             for (FsGridTools::FsIndex_t x = 0; x < localSize[0]; ++x) {
-               phiprof::Timer loopTopTimer {loopTopId};
+               //phiprof::Timer loopTopTimer {loopTopId};
                std::array<double, 3> start = BgBGrid.getPhysicalCoords(x, y, z);
                double dx[3];
                dx[0] = BgBGrid.DX;
@@ -79,9 +79,9 @@ void setBackgroundField(
                end[0]=start[0]+dx[0];
                end[1]=start[1]+dx[1];
                end[2]=start[2]+dx[2];
-               loopTopTimer.stop();
+               //loopTopTimer.stop();
 
-               phiprof::Timer loopFaceTimer {loopFaceId};
+               //phiprof::Timer loopFaceTimer {loopFaceId};
                //Face averages
                for(uint fComponent=0; fComponent<3; fComponent++){
                   T3DFunction valueFunction = std::bind(bgFunction, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, (coordinate)fComponent, 0, (coordinate)0);
@@ -117,9 +117,9 @@ void setBackgroundField(
                                     dx[faceCoord2[fComponent]]
                                    );
                }
-               loopFaceTimer.stop();
+               //loopFaceTimer.stop();
 
-               phiprof::Timer loopVolumeTimer {loopVolumeId};
+               //phiprof::Timer loopVolumeTimer {loopVolumeId};
                //Volume averages
                for(uint fComponent=0;fComponent<3;fComponent++){
                   T3DFunction valueFunction = std::bind(bgFunction, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, (coordinate)fComponent, 0, (coordinate)0);
@@ -131,7 +131,7 @@ void setBackgroundField(
                      BgBGrid.get(x,y,z)->at(fsgrids::bgbfield::dBGBXVOLdx+3*fComponent+dComponent) += dx[dComponent] * volumeAverage(derivFunction,accuracy,start.data(),end);
                   }
                }
-               loopVolumeTimer.stop();
+               //loopVolumeTimer.stop();
             }
          }
       }

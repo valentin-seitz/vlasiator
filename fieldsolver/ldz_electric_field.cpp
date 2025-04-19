@@ -1666,7 +1666,7 @@ void calculateUpwindedElectricFieldSimple(
    const FsGridTools::FsIndex_t* gridDims = &technicalGrid.getLocalSize()[0];
    const size_t N_cells = gridDims[0]*gridDims[1]*gridDims[2];
    phiprof::Timer upwindedETimer {"Calculate upwinded electric field"};
-   int computeTimerID {phiprof::initializeTimer("Electric field compute cells")};
+   //int computeTimerID {phiprof::initializeTimer("Electric field compute cells")};
    
    phiprof::Timer mpiTimer {"Electric field ghost updates MPI", {"MPI"}};
    // Update ghosts if necessary, unless previous terms have already updated them
@@ -1696,7 +1696,7 @@ void calculateUpwindedElectricFieldSimple(
    // Calculate upwinded electric field on inner cells
    #pragma omp parallel
    {
-      phiprof::Timer computeTimer {computeTimerID};
+      //phiprof::Timer computeTimer {computeTimerID};
       #pragma omp for collapse(2)
       for (FsGridTools::FsIndex_t k=0; k<gridDims[2]; k++) {
          for (FsGridTools::FsIndex_t j=0; j<gridDims[1]; j++) {
@@ -1739,7 +1739,7 @@ void calculateUpwindedElectricFieldSimple(
             }
          }
       }
-      computeTimer.stop(N_cells,"Spatial Cells");
+      //computeTimer.stop(N_cells,"Spatial Cells");
    }
    
    mpiTimer.start();

@@ -47,7 +47,7 @@ void gpu_accelerate_cells(dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geometry>& m
                           const uint popID,
                           const uint map_order
    ) {
-   int intersections_id {phiprof::initializeTimer("cell-compute-intersections")};
+   //int intersections_id {phiprof::initializeTimer("cell-compute-intersections")};
    uint gpuMaxBlockCount = 0;
    // Calculate intersections (should be constant cost per cell)
    #pragma omp parallel
@@ -78,15 +78,15 @@ void gpu_accelerate_cells(dccrg::Dccrg<SpatialCell,dccrg::Cartesian_Geometry>& m
 
    // Semi-Lagrangian acceleration for all cells active in this subcycle,
    // dimension-by-dimension. Dynamic cost due to varying block counts.
-   int timerId {phiprof::initializeTimer("cell-semilag-acc")};
+   //int timerId {phiprof::initializeTimer("cell-semilag-acc")};
    #pragma omp parallel for schedule(dynamic,1)
    for (size_t c=0; c<acceleratedCells.size(); ++c) {
       const CellID cellID = acceleratedCells[c];
       SpatialCell* SC = mpiGrid[cellID];
 
-      phiprof::Timer semilagAccTimer {timerId};
+      //phiprof::Timer semilagAccTimer {timerId};
       gpu_accelerate_cell(SC,popID,map_order);
-      semilagAccTimer.stop();
+      //semilagAccTimer.stop();
    }
 }
 
