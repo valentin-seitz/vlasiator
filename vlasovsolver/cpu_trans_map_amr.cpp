@@ -579,7 +579,7 @@ void update_remote_mapping_contribution_amr(
       vector<CellID> p_nbrs;
       vector<CellID> n_nbrs;
 
-      phiprof::Timer neighTimer {"get face neighbors"};
+      //phiprof::Timer neighTimer {"get face neighbors"};
       for (const auto& [neighbor, dir] : mpiGrid.get_face_neighbors_of(c)) {
          if(dir == ((int)dimension + 1) * direction) {
             p_nbrs.push_back(neighbor);
@@ -589,14 +589,14 @@ void update_remote_mapping_contribution_amr(
             n_nbrs.push_back(neighbor);
          }
       }
-      neighTimer.stop();
+      //neighTimer.stop();
       uint sendIndex = 0;
       uint recvIndex = 0;
 
       int mySiblingIndex = get_sibling_index(mpiGrid,c);
 
       // Set up sends if any neighbor cells in p_nbrs are non-local.
-      phiprof::Timer sendsTimer {"setup sends"};
+      //phiprof::Timer sendsTimer {"setup sends"};
       if (!all_of(p_nbrs.begin(), p_nbrs.end(), [&mpiGrid](CellID i){return mpiGrid.is_local(i);})) {
 
          // ccell adds a neighbor_block_data block for each neighbor in the positive direction to its local data
@@ -659,8 +659,8 @@ void update_remote_mapping_contribution_amr(
          } // closes for(uint i_nbr = 0; i_nbr < nbrs_to.size(); ++i_nbr)
 
       } // closes if(!all_of(nbrs_to.begin(), nbrs_to.end(),[&mpiGrid](CellID i){return mpiGrid.is_local(i);}))
-      sendsTimer.stop();
-      phiprof::Timer recvsTimer {"setup recvs"};
+      //sendsTimer.stop();
+      //phiprof::Timer recvsTimer {"setup recvs"};
       // Set up receives if any neighbor cells in n_nbrs are non-local.
       if (!all_of(n_nbrs.begin(), n_nbrs.end(), [&mpiGrid](CellID i){return mpiGrid.is_local(i);})) {
 
