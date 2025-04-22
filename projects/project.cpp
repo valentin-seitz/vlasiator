@@ -250,9 +250,9 @@ namespace projects {
 
       // Call project-specific fill function, which loops over all requested blocks,
       // fills v-space into target
-      phiprof::Timer fillTimer {"fill phasespace"};
+      //phiprof::Timer fillTimer {"fill phasespace"};
       const Realf nullsum = fillPhaseSpace(cell, popID, nRequested);
-      fillTimer.stop();
+      //fillTimer.stop();
       if (rescalesDensity(popID) == true) {
          rescaleDensity(cell,popID);
       }
