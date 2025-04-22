@@ -235,7 +235,7 @@ namespace projects {
    }
 
    void Project::setVelocitySpace(const uint popID,SpatialCell* cell) const {
-      phiprof::Timer setVSpacetimer {"Set Velocity Space"};
+      //phiprof::Timer setVSpacetimer {"Set Velocity Space"};
       // Find list of blocks to initialize. The project.cpp version returns
       // all possible blocks, projectTriAxisSearch provides a more educated guess.
 

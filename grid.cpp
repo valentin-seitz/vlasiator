@@ -267,7 +267,7 @@ void initializeGrids(
       // Allow the project to set up data structures for it's setCell calls
       project.setupBeforeSetCell(cells);
 
-      phiprof::Timer setCellTimer {"setCell"};
+      //phiprof::Timer setCellTimer {"setCell"};
       #pragma omp parallel for schedule(dynamic)
       for (size_t i=0; i<cells.size(); ++i) {
          SpatialCell* cell = mpiGrid[cells[i]];
@@ -275,7 +275,7 @@ void initializeGrids(
             project.setCell(cell);
          }
       }
-      setCellTimer.stop();
+      //setCellTimer.stop();
 
       // Initial state for sys-boundary cells
       sysBoundaries.applyInitialState(mpiGrid, technicalGrid, perBGrid, BgBGrid, project);
