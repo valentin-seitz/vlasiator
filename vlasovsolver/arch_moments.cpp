@@ -143,14 +143,14 @@ void calculateCellMoments(spatial_cell::SpatialCell* cell,
       Real array[nMom2] = {0};
 
       // Calculate species' contribution to second velocity moments
-      phiprof::Timer secondMomentsTimer {"calcSecondMoments"};
+      //phiprof::Timer secondMomentsTimer {"calcSecondMoments"};
       blockVelocitySecondMoments(blockContainer,
                                  cell->parameters[CellParams::VX],
                                  cell->parameters[CellParams::VY],
                                  cell->parameters[CellParams::VZ],
                                  array,
                                  nBlocks);
-      secondMomentsTimer.stop();
+      //secondMomentsTimer.stop();
       // Store species' contribution to bulk velocity moments
       Population &pop = cell->get_population(popID);
       for (size_t i=0; i<nMom2; ++i) {

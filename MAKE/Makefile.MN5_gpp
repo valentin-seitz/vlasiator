@@ -26,15 +26,15 @@ else
 endif
 
 # GNU flags:
-CXXFLAGS += -O3 -fopenmp -funroll-loops -std=c++20 -W -Wall -Wno-unused -mavx2 -march=sapphirerapids
-testpackage: CXXFLAGS = -O2 -fopenmp -funroll-loops -std=c++20 -fabi-version=0 -mavx2 -march=sapphirerapids
+CXXFLAGS += -O3 -g -fopenmp -funroll-loops -std=c++20 -march=sapphirerapids
+testpackage: CXXFLAGS = -O2 -fopenmp -funroll-loops -std=c++20 -fabi-version=0 -march=sapphirerapids
 
 MATHFLAGS = -ffast-math -fno-finite-math-only
 testpackage: MATHFLAGS = -fno-unsafe-math-optimizations
 
 # GCC
 LDFLAGS = -fopenmp -Wl,--as-needed
-LIB_MPI = -lgomp
+#LIB_MPI = -lgomp
 
 # Intel
 #LDFLAGS = -qopenmp -Wl,--as-needed
@@ -66,7 +66,7 @@ testpackage: CXXFLAGS += -DMPICH_IGNORE_CXX_SEEK
 #======== Libraries ===========
 
 # Adjust to where your own libraries/dependencies have been built.
-LIBRARY_PREFIX = /gpfs/scratch/bsc33/bsc033790/vlasiator/inst/gcc-ompi4/deps
+LIBRARY_PREFIX = /gpfs/scratch/bsc33/bsc033790/vlasiator/inst/clang-ompi4-dev/deps
 
 # Compiled libraries
 INC_BOOST = 
