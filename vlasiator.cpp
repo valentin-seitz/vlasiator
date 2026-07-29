@@ -64,6 +64,9 @@
 
 #include <signal.h>
 
+#include <scorep/SCOREP_User_Functions.h>
+#include <scorep/SCOREP_User.h>
+
 #ifdef CATCH_FPE
 #include <fenv.h>
 /*! Function used to abort the program upon detecting a floating point exception. Which exceptions are caught is defined using the function feenableexcept.
@@ -1432,6 +1435,8 @@ int simulate(int argn,char* args[]) {
    return 0;
 }
 
+volatile bool trickflag = false;
+
 int main(int argn, char* args[]) {
    // Before MPI_Init we hardwire some settings, if we are in OpenMPI
    int myRank;
@@ -1482,6 +1487,14 @@ int main(int argn, char* args[]) {
       }
    }
 
+   if(trickflag){
+
+   SCOREP_USER_REGION_BY_NAME_BEGIN("foo",SCOREP_USER_REGION_TYPE_COMMON );
+   SCOREP_USER_REGION_BY_NAME_END("foo");
+  
+   SCOREP_RECORDING_OFF();
+   SCOREP_RECORDING_ON();
+   }
    int ret {simulate(argn, args)};
 
    if(overrideMCAompio) {
