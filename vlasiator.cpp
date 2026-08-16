@@ -1487,6 +1487,14 @@ int main(int argn, char* args[]) {
       }
    }
 
+   // Add a small openmp Region to ScoreP has the chance to inializte that before it gets shut down
+   #pragma omp parallel 
+   {
+      if(trickflag){
+         std::cout << "OH NOOOO the trickflag is true" << std::endl;
+      }
+   }
+
    if(trickflag){
 
    SCOREP_USER_REGION_BY_NAME_BEGIN("foo",SCOREP_USER_REGION_TYPE_COMMON );
